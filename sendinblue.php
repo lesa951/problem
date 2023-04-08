@@ -1,5 +1,9 @@
 <?php
-ini_set('display_errors',1);
+ini_set('display_errors', 0);
+error_reporting(0);
+
+// Ostatak koda...
+
 define('Sendinblue_Module_Version', '1.304');
 class ControllerExtensionModuleSendinBlue extends Controller {
 	private $error = array();
