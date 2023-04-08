@@ -1,9 +1,5 @@
 <?php
-ini_set('display_errors', 0);
-error_reporting(0);
-
-// Ostatak koda...
-
+ini_set('display_errors',1);
 define('Sendinblue_Module_Version', '1.304');
 class ControllerExtensionModuleSendinBlue extends Controller {
 	private $error = array();
@@ -663,7 +659,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 		}
 
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+		$this->response->setOutput(@json_encode($json));
 	}	
 	
 	
@@ -712,7 +708,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 			}			
 		}
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+		$this->response->setOutput(@json_encode($json));
 		
 	}
 	
@@ -807,7 +803,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 			$json['error'] = "No records with the filtered range available for sync";
 		}
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+		$this->response->setOutput(@json_encode($json));
 		
 	}
 	
@@ -1200,7 +1196,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 		}
 		
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+		$this->response->setOutput(@json_encode($json));
 	}
 	
 	public function ajax_import_orders() {
@@ -1314,7 +1310,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 			}
 		}
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+		$this->response->setOutput(@json_encode($json));
 	}
 		
 	public function ajax_getprocess() {
@@ -1336,7 +1332,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 				$json['error'] = 1;
 			}
 			$this->response->addHeader('Content-Type: application/json');
-			$this->response->setOutput(json_encode($json));
+			$this->response->setOutput(@json_encode($json));
 		} catch (Exception $e) {
 			return json_decode($e->getResponseBody(), true);
 		}
