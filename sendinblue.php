@@ -659,7 +659,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 		}
 
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(@json_encode($json));
+		$this->response->setOutput(json_encode($json));
 	}	
 	
 	
@@ -708,7 +708,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 			}			
 		}
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(@json_encode($json));
+		$this->response->setOutput(json_encode($json));
 		
 	}
 	
@@ -803,7 +803,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 			$json['error'] = "No records with the filtered range available for sync";
 		}
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(@json_encode($json));
+		$this->response->setOutput(json_encode($json));
 		
 	}
 	
@@ -1196,7 +1196,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 		}
 		
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(@json_encode($json));
+		$this->response->setOutput(json_encode($json));
 	}
 	
 	public function ajax_import_orders() {
@@ -1310,7 +1310,7 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 			}
 		}
 		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(@json_encode($json));
+		$this->response->setOutput(json_encode($json));
 	}
 		
 	public function ajax_getprocess() {
@@ -1332,54 +1332,34 @@ class ControllerExtensionModuleSendinBlue extends Controller {
 				$json['error'] = 1;
 			}
 			$this->response->addHeader('Content-Type: application/json');
-			$this->response->setOutput(@json_encode($json));
+			$this->response->setOutput(json_encode($json));
 		} catch (Exception $e) {
 			return json_decode($e->getResponseBody(), true);
 		}
 	}
-	
-	
 	
 	private function createCSV(string $filename, $data, $return_data = false) {
 		if(!$filename){
 			$filename = 'somefile.csv';	
 		}
 		
-		if (!is_array($data) || empty($data) || !is_array($data[0])) {
-    return false;
-}
+		if (file_exists($filename)) { unlink($filename); }
+		
+		$fp = fopen($filename, 'w');
+		
+		// Header Row
+		$header_row = array_keys($data[0]);
+		fputcsv($fp, $header_row, ';');
 
-if (!is_array($data) || empty($data)) {
-    return false;
-}
+		// Data Rows
+		foreach ($data as $row) {
+			fputcsv($fp, $row, ';');
+		}
 
-if (file_exists($filename)) {
-    unlink($filename);
-}
-
-$fp = fopen($filename, 'w');
-
-// Header Row
-if (isset($data[0]) && is_array($data[0])) {
-    $header_row = array_keys($data[0]);
-    fputcsv($fp, $header_row, ';');
-} else {
-    fclose($fp);
-    return false;
-}
-
-// Data Rows
-foreach ($data as $row) {
-    if (is_array($row)) {
-        fputcsv($fp, $row, ';');
-    }
-}
-
-fclose($fp);
-
-return true;
-
-
+		fclose($fp);
+		
+		return true;
+	
 	}
 	
 	public function get_smtp_details() {
